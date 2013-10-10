@@ -1,6 +1,5 @@
 <head>
 	<title>Vetro</title>
-	<script src="https://apis.google.com/js/plusone.js"></script>
 	<script type="text/javascript">
       (function() {
        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
@@ -8,17 +7,29 @@
        var s = document.getElementsByTagName('script')[0]; 
        	   s.parentNode.insertBefore(po, s);
      })();
-    </script>
-    <script type="text/javascript">
     	function signinCallback(authResult) {
 		  if (authResult['access_token']) {
 		    // Update the app to reflect a signed in user
 		    // Hide the sign-in button now that the user is authorized, for example:
+        var clientId = '202055712427.apps.googleusercontent.com';
+        var scopes = 'https://www.googleapis.com/auth/plus.me';
 		    document.getElementById('signinButton').setAttribute('style', 'display: none');
-		    console.log('buhi doh: ' + authResult['access_token']);
+         gapi.client.load('youtube', 'v3', function() {
+              console.log('Youtube api loaded');
+         });
+         gapi.client.load('plus', 'v1', function() {
+                     console.log('plus loaded!');
+                     });
+        console.log("IS initialize? " + JSON.stringify(gapi.client));
+		    console.log('Access Token: ' + authResult['access_token']);
+        console.log(authResult['userinfo']);
 		    gapi.client.setApiKey('AIzaSyBm3SF1e_SXkCPpQBBoPI37HrCfnuSfaRw');
+        gapi.auth.setToken(authResult['access_token'],'AIzaSyBm3SF1e_SXkCPpQBBoPI37HrCfnuSfaRw');
+        gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, makeApiCall);
+        //console.log("Auth Token: " + gapi.auth.getToken());
 		    //gapi.auth.setToken();
-		    makeApiCall();
+       
+		    
 		  } else if (authResult['error']) {
 		    // Update the app to reflect a signed out user
 		    // Possible error values:
@@ -31,25 +42,71 @@
 		}
 
 		function makeApiCall() {
-        	gapi.client.load('plus', 'v1', function() {
-          	var request = gapi.client.plus.people.get({
-            	'userId': 'me'
-          	});
-          	request.execute(function(resp) {
-            	var heading = document.createElement('h4');
-            	var image = document.createElement('img');
-            	//image.src = resp.image.url;
-            	//heading.appendChild(image);
-            	//heading.appendChild(document.createTextNode(resp.displayName));
+     
+        //var request = gapi.client.youtube.channels.list({
+       //     mine: true,
+        //    part: 'contentDetails'
+        //});
 
-//            	document.getElementById('content').appendChild(heading);
-                console.log('Display Name: ' + resp.displayName);
-                console.log('Display Name: ' + resp.email);
-          	});
+        //var request = gapi.client.plus.people()
+        var request = gapi.client.plus.people.get({
+               'userId': 'me'
         });
 
-      }
+          request.execute(function(response) {
+          // playlistId = response.result.items[0].contentDetails.relatedPlaylists.uploads;
+          console.log("Response from youtube: " + JSON.stringify(response));
+          //requestVideoPlaylist(playlistId);
+        });
 
+    }
+
+    function requestVideoPlaylist(playlistId, pageToken) {
+        $('#video-container').html('');
+        var requestOptions = {
+          playlistId: playlistId,
+          part: 'snippet',
+          maxResults: 10
+        };
+        if (pageToken) {
+          requestOptions.pageToken = pageToken;
+        }
+        var request = gapi.client.youtube.playlistItems.list(requestOptions);
+        request.execute(function(response) {
+          // Only show the page buttons if there's a next or previous page.
+          nextPageToken = response.result.nextPageToken;
+          var nextVis = nextPageToken ? 'visible' : 'hidden';
+          $('#next-button').css('visibility', nextVis);
+          prevPageToken = response.result.prevPageToken
+          var prevVis = prevPageToken ? 'visible' : 'hidden';
+          $('#prev-button').css('visibility', prevVis);
+
+          var playlistItems = response.result.items;
+          if (playlistItems) {
+            $.each(playlistItems, function(index, item) {
+              displayResult(item.snippet);
+            });
+          } else {
+            $('#video-container').html('Sorry you have no uploaded videos');
+          }
+        });
+    }
+
+    function displayResult(videoSnippet) {
+      var title = videoSnippet.title;
+      var videoId = videoSnippet.resourceId.videoId;
+      $('#video-container').append('<p>' + title + ' - ' + videoId + '</p>');
+    }
+
+    // Retrieve the next page of videos.
+    function nextPage() {
+      requestVideoPlaylist(playlistId, nextPageToken);
+    }
+
+    // Retrieve the previous page of videos.
+    function previousPage() {
+      requestVideoPlaylist(playlistId, prevPageToken);
+    }
 
     </script>
 </head>
