@@ -1,5 +1,6 @@
 Meteor.startup(function(){
-	
+	Session.setDefault('status_filter', 'Applied');
+	Session.setDefault('dd_id', null);
 });
 
 Router.map(function(){
@@ -7,7 +8,19 @@ Router.map(function(){
 	this.route('admin_backpanel');
 	this.route('login');
 	this.route('oauthtest');
-	this.route('application_success');
+	this.route('application_success',{path: '/application_form/success'});
+	this.route('applied', {path: '/admin_backpanel/applied'});
+	this.route('accepted', {path: '/admin_backpanel/accepted'});
+	this.route('denied', {path: '/admin_backpanel/denied'});
+	this.route('contract_sent', {path: '/admin_backpanel/contract_sent'});
+	this.route('declined', {path: '/admin_backpanel/declined'});
+	this.route('partner_queue', {path: '/admin_backpanel/partner_queue'});
+	this.route('video_claiming_sent', {path: '/admin_backpanel/video_claiming_sent'});
+	this.route('adsense_not_approved', {path: '/admin_backpanel/adsense_not_approved'});
+	this.route('disabled_by_youtube', {path: '/admin_backpanel/disabled_by_youtube'});
+	this.route('removed', {path: '/admin_backpanel/removed'});
+	this.route('blacklisted', {path: '/admin_backpanel/blacklisted'});
+	this.route('completed', {path: '/admin_backpanel/completed'});
 });
 
 Template.admin_backpanel.rendered = function(){
@@ -28,17 +41,348 @@ Template.admin_backpanel.rendered = function(){
 	}(window.jQuery);
 
 	$("#btnExport").click(function(e) {
-    window.open('data:application/vnd.ms-excel,' + $('#admintable').html());
-    e.preventDefault();
-});
+      	var uri = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,' + $('#admintable').html();
+	  	var downloadLink = document.createElement("a");
+		downloadLink.href = uri;
+		downloadLink.download = "backpanel-data.xls";
 
+		document.body.appendChild(downloadLink);
+		downloadLink.click();
+		document.body.removeChild(downloadLink);
+
+ 		myWindow.focus();
+    	e.preventDefault();
+	});
 }
 
 Template.admin_backpanel.helpers({
 	applicants: function(){
 		return applications.find();
+	},
+	getNS: function(cs){
+		return application_status.find({cs:cs});
 	}
 })
+
+Template.applied.helpers({
+	applicants: function(){
+		return applications.find({status:"Applied"});
+	},
+	getNS: function(cs){
+		return application_status.find({cs:cs});
+	}
+})
+
+Template.accepted.helpers({
+	applicants: function(){
+		return applications.find({status:"Accepted"});
+	},
+	getNS: function(cs){
+		return application_status.find({cs:cs});
+	}
+})
+
+Template.denied.helpers({
+	applicants: function(){
+		return applications.find({status:"Denied"});
+	},
+	getNS: function(cs){
+		return application_status.find({cs:cs});
+	}
+})
+
+Template.contract_sent.helpers({
+	applicants: function(){
+		return applications.find({status:"Contract Sent"});
+	},
+	getNS: function(cs){
+		return application_status.find({cs:cs});
+	}
+})
+
+Template.declined.helpers({
+	applicants: function(){
+		return applications.find({status:"Declined"});
+	},
+	getNS: function(cs){
+		return application_status.find({cs:cs});
+	}
+})
+
+Template.partner_queue.helpers({
+	applicants: function(){
+		return applications.find({status:"Partner Queue"});
+	},
+	getNS: function(cs){
+		return application_status.find({cs:cs});
+	}
+})
+
+Template.video_claiming_sent.helpers({
+	applicants: function(){
+		return applications.find({status:"Video Claiming Sent"});
+	},
+	getNS: function(cs){
+		return application_status.find({cs:cs});
+	}
+})
+
+Template.adsense_not_approved.helpers({
+	applicants: function(){
+		return applications.find({status:"AdSense Not Approved"});
+	},
+	getNS: function(cs){
+		return application_status.find({cs:cs});
+	}
+})
+
+Template.disabled_by_youtube.helpers({
+	applicants: function(){
+		return applications.find({status:"Disabled by YouTube"});
+	},
+	getNS: function(cs){
+		return application_status.find({cs:cs});
+	}
+})
+
+Template.completed.helpers({
+	applicants: function(){
+		return applications.find({status:"Completed"});
+	},
+	getNS: function(cs){
+		return application_status.find({cs:cs});
+	}
+})
+
+Template.removed.helpers({
+	applicants: function(){
+		return applications.find({status:"Removed"});
+	},
+	getNS: function(cs){
+		return application_status.find({cs:cs});
+	}
+})
+
+Template.blacklisted.helpers({
+	applicants: function(){
+		return applications.find({status:"Blacklisted"});
+	},
+	getNS: function(cs){
+		return application_status.find({cs:cs});
+	}
+})
+
+Template.admin_backpanel.events({
+	"click .toggle": function(){
+		if (applications.findOne({_id:this._id}).copyright_status) {
+			applications.update({_id:this._id},{$set:{copyright_status:false}});
+		}else{
+			applications.update({_id:this._id},{$set:{copyright_status:true}});
+		}
+	},
+	"click .dropdown-toggle": function(){
+		Session.set('dd_id', this._id);
+	},
+	"click .status_option": function(){
+		applications.update({_id:Session.get('dd_id')},{$set:{status:this.ns}});
+	}
+});
+
+Template.applied.events({
+	"click .toggle": function(){
+		if (applications.findOne({_id:this._id}).copyright_status) {
+			applications.update({_id:this._id},{$set:{copyright_status:false}});
+		}else{
+			applications.update({_id:this._id},{$set:{copyright_status:true}});
+		}
+	},
+	"click .dropdown-toggle": function(){
+		Session.set('dd_id', this._id);
+	},
+	"click .status_option": function(){
+		applications.update({_id:Session.get('dd_id')},{$set:{status:this.ns}});
+	}
+});
+
+Template.accepted.events({
+	"click .toggle": function(){
+		if (applications.findOne({_id:this._id}).copyright_status) {
+			applications.update({_id:this._id},{$set:{copyright_status:false}});
+		}else{
+			applications.update({_id:this._id},{$set:{copyright_status:true}});
+		}
+	},
+	"click .dropdown-toggle": function(){
+		Session.set('dd_id', this._id);
+	},
+	"click .status_option": function(){
+		applications.update({_id:Session.get('dd_id')},{$set:{status:this.ns}});
+	}
+});
+
+Template.removed.events({
+	"click .toggle": function(){
+		if (applications.findOne({_id:this._id}).copyright_status) {
+			applications.update({_id:this._id},{$set:{copyright_status:false}});
+		}else{
+			applications.update({_id:this._id},{$set:{copyright_status:true}});
+		}
+	},
+	"click .dropdown-toggle": function(){
+		Session.set('dd_id', this._id);
+	},
+	"click .status_option": function(){
+		applications.update({_id:Session.get('dd_id')},{$set:{status:this.ns}});
+	}
+});
+
+Template.denied.events({
+	"click .toggle": function(){
+		if (applications.findOne({_id:this._id}).copyright_status) {
+			applications.update({_id:this._id},{$set:{copyright_status:false}});
+		}else{
+			applications.update({_id:this._id},{$set:{copyright_status:true}});
+		}
+	},
+	"click .dropdown-toggle": function(){
+		Session.set('dd_id', this._id);
+	},
+	"click .status_option": function(){
+		applications.update({_id:Session.get('dd_id')},{$set:{status:this.ns}});
+	}
+});
+
+Template.declined.events({
+	"click .toggle": function(){
+		if (applications.findOne({_id:this._id}).copyright_status) {
+			applications.update({_id:this._id},{$set:{copyright_status:false}});
+		}else{
+			applications.update({_id:this._id},{$set:{copyright_status:true}});
+		}
+	},
+	"click .dropdown-toggle": function(){
+		Session.set('dd_id', this._id);
+	},
+	"click .status_option": function(){
+		applications.update({_id:Session.get('dd_id')},{$set:{status:this.ns}});
+	}
+});
+
+Template.contract_sent.events({
+	"click .toggle": function(){
+		if (applications.findOne({_id:this._id}).copyright_status) {
+			applications.update({_id:this._id},{$set:{copyright_status:false}});
+		}else{
+			applications.update({_id:this._id},{$set:{copyright_status:true}});
+		}
+	},
+	"click .dropdown-toggle": function(){
+		Session.set('dd_id', this._id);
+	},
+	"click .status_option": function(){
+		applications.update({_id:Session.get('dd_id')},{$set:{status:this.ns}});
+	}
+});
+
+Template.partner_queue.events({
+	"click .toggle": function(){
+		if (applications.findOne({_id:this._id}).copyright_status) {
+			applications.update({_id:this._id},{$set:{copyright_status:false}});
+		}else{
+			applications.update({_id:this._id},{$set:{copyright_status:true}});
+		}
+	},
+	"click .dropdown-toggle": function(){
+		Session.set('dd_id', this._id);
+	},
+	"click .status_option": function(){
+		applications.update({_id:Session.get('dd_id')},{$set:{status:this.ns}});
+	}
+});
+
+Template.video_claiming_sent.events({
+	"click .toggle": function(){
+		if (applications.findOne({_id:this._id}).copyright_status) {
+			applications.update({_id:this._id},{$set:{copyright_status:false}});
+		}else{
+			applications.update({_id:this._id},{$set:{copyright_status:true}});
+		}
+	},
+	"click .dropdown-toggle": function(){
+		Session.set('dd_id', this._id);
+	},
+	"click .status_option": function(){
+		applications.update({_id:Session.get('dd_id')},{$set:{status:this.ns}});
+	}
+});
+
+Template.adsense_not_approved.events({
+	"click .toggle": function(){
+		if (applications.findOne({_id:this._id}).copyright_status) {
+			applications.update({_id:this._id},{$set:{copyright_status:false}});
+		}else{
+			applications.update({_id:this._id},{$set:{copyright_status:true}});
+		}
+	},
+	"click .dropdown-toggle": function(){
+		Session.set('dd_id', this._id);
+	},
+	"click .status_option": function(){
+		applications.update({_id:Session.get('dd_id')},{$set:{status:this.ns}});
+	}
+});
+
+Template.disabled_by_youtube.events({
+	"click .toggle": function(){
+		if (applications.findOne({_id:this._id}).copyright_status) {
+			applications.update({_id:this._id},{$set:{copyright_status:false}});
+		}else{
+			applications.update({_id:this._id},{$set:{copyright_status:true}});
+		}
+	},
+	"click .dropdown-toggle": function(){
+		Session.set('dd_id', this._id);
+	},
+	"click .status_option": function(){
+		applications.update({_id:Session.get('dd_id')},{$set:{status:this.ns}});
+	}
+});
+
+Template.completed.events({
+	"click .toggle": function(){
+		if (applications.findOne({_id:this._id}).copyright_status) {
+			applications.update({_id:this._id},{$set:{copyright_status:false}});
+		}else{
+			applications.update({_id:this._id},{$set:{copyright_status:true}});
+		}
+	},
+	"click .dropdown-toggle": function(){
+		Session.set('dd_id', this._id);
+	},
+	"click .status_option": function(){
+		applications.update({_id:Session.get('dd_id')},{$set:{status:this.ns}});
+	}
+});
+
+Template.blacklisted.events({
+	"click .toggle": function(){
+		if (applications.findOne({_id:this._id}).copyright_status) {
+			applications.update({_id:this._id},{$set:{copyright_status:false}});
+		}else{
+			applications.update({_id:this._id},{$set:{copyright_status:true}});
+		}
+	},
+	"click .dropdown-toggle": function(){
+		Session.set('dd_id', this._id);
+	},
+	"click .status_option": function(){
+		applications.update({_id:Session.get('dd_id')},{$set:{status:this.ns}});
+	}
+});
+
+Template.to_excel.applicants = function(){
+	return applications.find();
+}
 
 Template.oauthtest.rendered = function(){
 	// (function() {
@@ -84,6 +428,24 @@ Template.application_form.events({
 			}
 		});
 	},
+	'click .getYouTubeData':function(e,t){
+		var channel = $('#yt_channel_name').val();
+		Meteor.call("checkYT", channel, function(error, results) {
+			var jsondecoded = json_decode(results.content);		    
+		    if (jsondecoded.items.length === 0) {
+		    	alert("Invalid YouTube channel name.");
+		    }else{
+		    	console.log(jsondecoded); //results.data should be a JSON object
+		    	console.log(jsondecoded.items[0].kind);
+		    	$('#yt_daily_views').val(jsondecoded.items[0].statistics.viewCount);
+		    	$('#yt_daily_views2').html(jsondecoded.items[0].statistics.viewCount);
+		    	$('#yt_total_views').val(jsondecoded.items[0].statistics.viewCount);
+		    	$('#yt_total_views2').html(jsondecoded.items[0].statistics.viewCount);
+		    	$('#yt_subscribers').val(jsondecoded.items[0].statistics.subscriberCount);
+		    	$('#yt_subscribers2').html(jsondecoded.items[0].statistics.subscriberCount);
+		    }
+		});
+	},
 	'submit': function(e,t){
 		form = {};
 
@@ -106,6 +468,13 @@ Template.application_form.events({
 			else{
 				$('#app_form1')[0].reset();
 				Router.go('application_success')
+				Meteor.logout(function(err){
+					if(err){
+
+					}else{
+
+					}
+				});
 			}
 		});
 	}
@@ -162,3 +531,45 @@ function json_decode (str_json) {
 		this.php_js.last_error_json = 4; // usable by json_last_error()
 		return null;
 }
+
+Template.admin_backpanel.created = function() {
+	console.log("admin_backpanel Created!")
+	var _pager = new Meteor.Paginator({
+	    templates: {
+	        content: "admin_backpanel"
+	    }
+	    , pagination: {
+	        resultsPerPage: 5 //default limit
+	    }
+	    , callbacks: {
+	        onPagingCompleted: function(skip, limit) {
+	            Session.set("pagingSkip", skip);
+	            Session.set("pagingLimit", limit);
+	        }
+	        , getDependentSubscriptionsHandles: function() {
+	              return [Meteor.subHandle];
+	        }
+	        , getTotalRecords: function(cb) {
+	              //you need to return the total record count here
+	              //using the provided callback
+	              Meteor.call("totalCount", function(err, result) {
+	                cb(result);
+	              });
+	        }
+	        , onTemplateRendered: function() {
+	            //regular render code
+	        }
+	        , onTemplateCreated: function() {
+	            Session.set("pagingSkip", 0);
+	            Session.set("pagingLimit", 5);
+	        }
+	    }
+	});
+
+	console.log(_pager);
+
+	Deps.autorun(function() {
+		Meteor.subHandle = Meteor.subscribe("Applications", Session.get("pagingSkip"), Session.get("pagingLimit"));
+	})
+};
+
