@@ -1,0 +1,162 @@
+<template name="dashboard">
+	
+		<div class="row">
+			<div class="col-md-3 sidebar">
+				<div class="row">
+					<div class="col-md-3 logo-container-left">
+						<a href="/">
+							<img src="/vetro.png" class="img-logo-prop" width='60' height='60'/>
+						</a>
+					</div>
+					<div class="col-md-9 vetro-digital-label">
+						<div class="row">
+							<div class="col-md-3">
+								<span class="label" id="vetro-digital-label-prop">Vetro Digital Dashboard Partner</span>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-3">
+								<span class="label" id="vetro-digital-label-prop">John Appleseed</span>
+							</div>	
+						</div>
+						<div class="row">
+							<div class="col-md-3">
+								<span class="label" id="vetro-digital-label-prop">
+									<a href="#" id="sidebar-logout">Log Out</a> | <a href="#" id="sidebar-settings">Settings</a>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div> <!--- End of Logo row-->
+				<div class="row sidebar-row-link-container">
+					<div class="row sidebar-row-container">
+						<!-- <div class="col-md-2 icon-column-container"> -->
+							<a href="/overview" class="link-icon">
+							  <img src="/icon-overview.png" class="img-logo-prop" width='30' height='30'/>
+							</a> 
+						<!-- </div> -->
+						<!-- <div class="col-md-4 label-column-container"> -->
+							  <a href="#" class="label sidebar-label">Overview</a>
+						<!-- </div> -->
+					</div>
+					<div class="row sidebar-row-container">
+						<!-- <div class="col-md-2 icon-column-container"> -->
+							<a href="/analytics" class="link-icon">
+							  <img src="/icon-analytics.png" class="img-logo-prop" width='30' height='30'/>
+							</a>  
+					<!-- 	</div> -->
+						<!-- <div class="col-md-4"> -->
+							  <a href="#" class="label sidebar-label">Analytics</a>
+						<!-- </div> -->
+					</div>
+					<div class="row sidebar-row-container">
+						<!-- <div class="col-md-2 icon-column-container"> -->
+							<a href="/overview" class="link-icon">
+							  <img src="/icon-myvideos.png" class="img-logo-prop" width='30' height='30'/>
+							</a>  
+						<!-- </div> -->
+						<!-- <div class="col-md-4"> -->
+							  <a href="#" class="label sidebar-label">My Videos</a>
+						<!-- </div> -->
+					</div>
+					<div class="row sidebar-row-container">
+						<!-- div class="col-md-2 icon-column-container"> -->
+							<a href="/overview" class="link-icon">
+							  <img src="/icon-notifications.png" class="img-logo-prop" width='30' height='30'/>
+							</a>  
+						<!-- </div> -->
+						<!-- <div class="col-md-4"> -->
+							  <a href="#" class="label sidebar-label">Notifications</a>
+						<!-- </div> -->
+					</div>
+					<div class="row sidebar-row-container">
+						<!-- <div class="col-md-2 icon-column-container"> -->
+							<a href="/overview" class="link-icon">
+							  <img src="/icon-earnings.png" class="img-logo-prop" width='30' height='30'/>
+							</a>  
+						<!-- </div> -->
+					<!-- 	<div class="col-md-4"> -->
+							  <a href="#" class="label sidebar-label">Earnings</a>
+						<!-- </div> -->
+					</div>
+					<div class="row sidebar-row-container">
+						<!-- <div class="col-md-2 icon-column-container"> -->
+							<a href="/overview" class="link-icon">
+							  <img src="/icon-channel.png" class="img-logo-prop" width='30' height='30'/>
+							</a>  
+						<!-- </div> -->
+						<!-- <div class="col-md-4"> -->
+							  <a href="#" class="label sidebar-label">Channel Settings</a>
+						<!-- </div> -->
+					</div>
+					<div class="row sidebar-row-container">
+						<!-- <div class="col-md-2 icon-column-container"> -->
+							<a href="/overview" class="link-icon">
+							  <img src="/icon-support.png" class="img-logo-prop" width='30' height='30'/>
+							</a>   
+						<!-- </div> -->
+						<!-- <div class="col-md-4"> -->
+							  <a href="#" class="label sidebar-label link-icon">Support</a>
+						<!-- </div> -->
+					</div>
+				</div>
+
+				<div class="row copyright-container">
+						<span class="label">&copy 2013 Jordan Gable</span>
+				</div>	
+			</div>
+
+			<div class="col-md-9 right-content">
+				<div class="row date-range-container">
+					<div class="col-md-2 select-days-container">
+
+						   <div class="btn-group grp-btn">
+								  <button type="button" class="btn btn-default" id="days-btn">Last 30 days</button>
+								  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="caret-btn">
+								    <span class="caret caret-btn"></span>
+								    <span class="sr-only btn-lg">Toggle Dropdown</span>
+								  </button>
+								  <ul class="dropdown-menu" role="menu">
+								  	<li><a href="#">Action</a></li>
+									<li><a href="#">Another action</a></li>
+									<li><a href="#">Something else here</a></li>
+								  </ul>
+							</div>
+					</div>
+					<div class="col-md-8 select-days-container2">
+						<div class="row">
+							<span class="range-date1">Sept.13th - Oct.13th</span> 
+							<span class="range-date-separator">/</span> 
+							<span class="range-date2">Sept.12th - Aug.13th</span>
+						</div>
+					</div>
+				</div>
+				<div class="row vetro-label-container">
+					<div class="col-md-8 vetro-partner-label-container">
+						<span class="vetro-partner-label">Vetro Partner Dashboard - At A Glance Stats</span>
+					</div>
+				</div>
+				<div class="row youtube-statistics-container">
+					<div class="row yt-statistics">
+					</div>
+					<div class="row yt-graph">
+					</div>
+				</div>
+				<div class="row demographics-global-container">
+					<div class="col-md-8 vetro-partner-label-container">
+						<span class="vetro-partner-label">Demographics - Global</span>
+					</div>
+				</div>
+				<div class="row youtube-statistics-container">
+					<div class="row yt-statistics">
+					</div>
+				</div>
+				<div class="row myvideos-container">
+				</div>
+				<div class="row youtube-statistics-container">
+					<div class="row yt-statistics">
+					</div>
+				</div>
+			</div>
+		</div>
+</template>
